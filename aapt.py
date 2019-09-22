@@ -17,6 +17,14 @@ import platform
 import io
 
 
+class Apk:
+    def __init__(self, file_path, apk_id, app_name, version_code, version_name):
+        self.path = file_path
+        self.id = apk_id
+        self.app_name = app_name
+        self.version_code = version_code
+        self.version_name = version_name
+
 def aapt(args='--help'):
     try:
         # Darwin: macOS Linux Windows
@@ -26,7 +34,6 @@ def aapt(args='--help'):
 
         file_path = os.path.dirname(os.path.abspath(__file__))
         aapt_path = os.path.join(file_path, 'bin', system_name, 'aapt_64')
-        print(aapt_path)
         if system_name == 'Windows':
             aapt_path += '.exe'
 
@@ -81,18 +88,11 @@ def get_apk_info(file_path):
         package_name = match.group(1)
         version_code = match.group(2)
         version_name = match.group(3)
-        # match = re.compile("application: label='([\u4e00-\u9fa5_a-zA-Z0-9-\\S]+)'").search(stdout)
-        # app_name = match.group(1)
-        # match = re.compile("application: label='([\u4e00-\u9fa5_a-zA-Z0-9-\\S]+)' icon='(\\S+)'").search(stdout)
-        # icon_path = (match and match.group(2)) or None
-        return {
-            'package_name': package_name,
-            'version_code': version_code,
-            'version_name': version_name,
-            # 'app_name': app_name,
-            # 'icon_path': icon_path,
-        }
+        app_match = re.compile("application: label='([\u4e00-\u9fa5_a-zA-Z0-9-\\S]+)'").search(stdout)
+        app_name = match.group(1)
+        return Apk(file_path, package_name, app_name, version_code, version_name)
     except Exception as e:
+        print("ERROR in aapt")
         raise e
 
 
