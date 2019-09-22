@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
 '''
 File: /aapt.py
 Project: aapt
@@ -27,7 +24,9 @@ def aapt(args='--help'):
         if (system_name != 'Darwin' and system_name != 'Linux' and system_name != 'Windows'):
             raise TypeError('unknown system type, only support Darwin、Linux、Windows')
 
-        aapt_path = os.path.join(os.getcwd(), 'bin', system_name, 'aapt_64')
+        file_path = os.path.dirname(os.path.abspath(__file__))
+        aapt_path = os.path.join(file_path, 'bin', system_name, 'aapt_64')
+        print(aapt_path)
         if system_name == 'Windows':
             aapt_path += '.exe'
 
@@ -82,16 +81,16 @@ def get_apk_info(file_path):
         package_name = match.group(1)
         version_code = match.group(2)
         version_name = match.group(3)
-        match = re.compile("application: label='([\u4e00-\u9fa5_a-zA-Z0-9-\\S]+)'").search(stdout)
-        app_name = match.group(1)
-        match = re.compile("application: label='([\u4e00-\u9fa5_a-zA-Z0-9-\\S]+)' icon='(\\S+)'").search(stdout)
-        icon_path = (match and match.group(2)) or None
+        # match = re.compile("application: label='([\u4e00-\u9fa5_a-zA-Z0-9-\\S]+)'").search(stdout)
+        # app_name = match.group(1)
+        # match = re.compile("application: label='([\u4e00-\u9fa5_a-zA-Z0-9-\\S]+)' icon='(\\S+)'").search(stdout)
+        # icon_path = (match and match.group(2)) or None
         return {
             'package_name': package_name,
             'version_code': version_code,
             'version_name': version_name,
-            'app_name': app_name,
-            'icon_path': icon_path,
+            # 'app_name': app_name,
+            # 'icon_path': icon_path,
         }
     except Exception as e:
         raise e
