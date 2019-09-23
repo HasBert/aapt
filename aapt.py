@@ -21,9 +21,13 @@ class Apk:
     def __init__(self, file_path, apk_id, app_name, version_code, version_name):
         self.path = file_path
         self.id = apk_id
-        self.app_name = app_name
+        self.name = app_name
         self.version_code = version_code
         self.version_name = version_name
+
+    def __repr__(self):
+        return "\n{{path: {},\nid: {},\nname: {},\nversion_code: {},\nversion_name: {}}}\n".format(
+            self.path, self.id, self.name, self.version_code, self.version_name)
 
 def aapt(args='--help'):
     try:
